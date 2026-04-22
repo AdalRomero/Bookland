@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HOID'S CHRONICLES</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400&amp;family=Space+Grotesk:wght@600&amp;family=Manrope:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#1e2020",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface-variant": "#bdc9c8",
+                        "surface-variant": "#333535",
+                        "inverse-on-surface": "#2f3131",
+                        "primary-fixed-dim": "#76d6d5",
+                        "secondary": "#ffffff",
+                        "surface-container-highest": "#333535",
+                        "tertiary-fixed": "#d6e3ff",
+                        "primary-fixed": "#93f2f2",
+                        "on-tertiary": "#233148",
+                        "on-tertiary-container": "#f9f9ff",
+                        "on-surface": "#e2e2e2",
+                        "outline-variant": "#3e4949",
+                        "on-background": "#e2e2e2",
+                        "tertiary-fixed-dim": "#b9c7e4",
+                        "secondary-fixed-dim": "#00dddd",
+                        "on-secondary": "#003737",
+                        "primary": "#76d6d5",
+                        "secondary-container": "#00fbfb",
+                        "surface-container-lowest": "#0c0f0f",
+                        "on-tertiary-fixed-variant": "#39475f",
+                        "on-error": "#690005",
+                        "primary-container": "#008080",
+                        "tertiary-container": "#65738d",
+                        "inverse-surface": "#e2e2e2",
+                        "on-primary-container": "#e3fffe",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#002020",
+                        "surface-tint": "#76d6d5",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "on-primary": "#003737",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#0d1c32",
+                        "outline": "#879392",
+                        "inverse-primary": "#006a6a",
+                        "surface-container-high": "#282a2b",
+                        "surface-dim": "#121414",
+                        "on-secondary-container": "#007070",
+                        "tertiary": "#b9c7e4",
+                        "on-primary-fixed": "#002020",
+                        "surface": "#121414",
+                        "secondary-fixed": "#00fbfb",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "surface-bright": "#37393a",
+                        "background": "#121414",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "stack-sm": "16px",
+                        "container-max": "1280px",
+                        "margin-page": "64px",
+                        "stack-md": "32px",
+                        "stack-lg": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Newsreader"],
+                        "headline-xl": ["Newsreader"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-lg": ["Newsreader"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "400" }],
+                        "headline-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "300" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        .btn-hover-glow:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            letter-spacing: 0.2em;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-slate-950/80 backdrop-blur-xl font-serif tracking-widest uppercase text-sm border-b border-teal-900/30 w-full top-0 sticky z-50">
+<div class="flex justify-between items-center px-12 py-4 w-full z-50 max-w-container-max mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-teal-400 drop-shadow-[0_0_8px_rgba(45,212,191,0.6)]">
+                HOID'S CHRONICLES
+            </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-teal-300 border-b-2 border-teal-500 pb-1 hover:text-teal-200 hover:tracking-[0.2em] transition-all duration-300 scale-95 active:opacity-80" href="#">STORIES</a>
+<a class="text-slate-400 hover:text-teal-200 hover:tracking-[0.2em] transition-all duration-300 scale-95 active:opacity-80" href="#">LEGENDS</a>
+<a class="text-slate-400 hover:text-teal-200 hover:tracking-[0.2em] transition-all duration-300 scale-95 active:opacity-80" href="#">CHARACTERS</a>
+<a class="text-slate-400 hover:text-teal-200 hover:tracking-[0.2em] transition-all duration-300 scale-95 active:opacity-80" href="#">WORLDS</a>
+<a class="text-slate-400 hover:text-teal-200 hover:tracking-[0.2em] transition-all duration-300 scale-95 active:opacity-80" href="#">SUPPORT</a>
+</nav>
+<button class="bg-primary text-secondary font-label-caps text-label-caps px-6 py-3 rounded-DEFAULT hover:bg-secondary-container transition-colors duration-300 btn-hover-glow hidden lg:block">
+                EXPLORE THE ARCHIVE
+            </button>
+</div>
+</header>
+<main class="flex-grow flex flex-col gap-stack-lg pb-stack-lg">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center px-gutter overflow-hidden bg-surface-container-lowest">
+<!-- Background Image -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-60 mix-blend-screen" data-alt="Mystical cosmic landscape with dark silhouette of a figure sitting by a campfire on a hill, playing a flute. Smoke forms spiral runes. Sky has glowing aurora, celestial octagram, moons, and distant planets. Minimalist vector style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA58hYrwNv5HLxbx_FN7plPae5CnqiT_YMZGFUynWumNOHxp19qcROcudqmlkOFMzFduvsE6DTPNYxnYIZ1JW_80HKOJVaboV0Y6MxDWZj0uOC_TK63VIjHNgrFHJCi1xd33lgSpT8FCKxEj_zj-Gf-FC3Dn14aWvGERW5_ON5BEGOUe9eM1bvi2K7x_fu1ao6AEtr8MhPNzbOg8WRKzWr7ukO1n5keggxsT-FDAxc2DoqtR9WzTKnsYpeKmjqoBfjuhNPiDKlzVi4');">
+</div>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background"></div>
+<div class="relative z-10 text-center max-w-3xl mx-auto flex flex-col items-center gap-stack-md mt-stack-lg">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Beyond the Known</span>
+<h1 class="font-headline-xl text-headline-xl text-secondary drop-shadow-[0_0_12px_rgba(118,214,213,0.4)]">
+                    EXPLORE THE COSMERE
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Discover countless stories told by the ultimate witness. Unravel the mysteries of the universe, one tale at a time.
+                </p>
+<div class="flex gap-4 mt-4">
+<button class="bg-primary text-secondary font-label-caps text-label-caps px-8 py-4 rounded-DEFAULT transition-all duration-300 btn-hover-glow uppercase tracking-widest">
+                        LISTEN
+                    </button>
+<button class="bg-transparent border border-secondary text-secondary font-label-caps text-label-caps px-8 py-4 rounded-DEFAULT hover:bg-white/5 transition-all duration-300 btn-hover-glow uppercase tracking-widest">
+                        LEARN
+                    </button>
+</div>
+</div>
+</section>
+<!-- Feature Grid -->
+<section class="max-w-container-max mx-auto px-margin-page w-full">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Item 1 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">history_edu</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">ANCIENT LEGENDS</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Tales whispered across millennia, preserved in the very fabric of reality.</p>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">menu_book</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">TIMELESS TALES</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Stories that transcend worlds, carrying truths veiled in metaphor.</p>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">public</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">NEW WORLDS</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Explore alien landscapes and forgotten realms born of Investiture.</p>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">auto_awesome</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">COSMIC LORE</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Uncover the deep magic and hidden connections binding the universe.</p>
+</div>
+<!-- Item 5 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">visibility</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">WITNESS' PERSPECTIVE</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">See history unfold through the eyes of the one who was always there.</p>
+</div>
+<!-- Item 6 -->
+<div class="bg-surface-container-low/80 backdrop-blur-md border border-primary/20 rounded-lg p-stack-md hover:border-primary transition-colors duration-300 group flex flex-col gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:glow-cyan transition-shadow">
+<span class="material-symbols-outlined text-2xl">music_note</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-secondary tracking-widest uppercase mt-2">ORAL TRADITIONS</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Experience the rhythm of myths passed down through song and breath.</p>
+</div>
+</div>
+</section>
+<!-- Section 1 -->
+<section class="max-w-container-max mx-auto px-margin-page w-full grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center mt-stack-md">
+<div class="relative h-[600px] rounded-xl overflow-hidden border border-primary/20 group">
+<div class="absolute inset-0 bg-surface-container-low/50 backdrop-blur-sm z-10 group-hover:backdrop-blur-none transition-all duration-700"></div>
+<img alt="Cosmic Realm" class="w-full h-full object-cover mix-blend-luminosity opacity-80" data-alt="Mystical vector cosmic realm with silhouetted storyteller standing before swirling galaxies and deep space nebulas in teal and dark blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQG8IuE9lB0a49mBByJy_VvKfpOpHMITv0RCBBlLubDYyVDRov-qYdhFcpp2K3EZyAMdRPFtEsQf7arX-74sSnjtxbQdt71ZVBNQA0qedtviguSvr7G4h8jVMUswnOyY8n9-mku8N63XglTy_hNHlAYYZFFBAYGErceBCmYg7T8yrtStsPh8KrsvW3Pwhn9elo4GT0eo1QJoKsvq18rtoEhTDJqpKSgIvcKYEN7y3UujUYluvQXOey82A-l6MrZPpf_3kZbECe62c"/>
+</div>
+<div class="flex flex-col gap-stack-sm pl-md:gutter">
+<h2 class="font-headline-lg text-headline-lg text-secondary">SEE THE WORLDS UNFOLD</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Embark on a visual and auditory journey through shattered plains, mist-shrouded cities, and colorful jungles. The archive awaits those willing to listen to the silence between the stars.
+                </p>
+<button class="bg-transparent border border-secondary text-secondary font-label-caps text-label-caps px-8 py-4 rounded-DEFAULT hover:bg-white/5 transition-all duration-300 btn-hover-glow w-fit mt-4 uppercase tracking-widest">
+                    JOURNEY NOW
+                </button>
+</div>
+</section>
+<!-- Section 2 -->
+<section class="max-w-container-max mx-auto px-margin-page w-full grid grid-cols-1 md:grid-cols-2 gap-stack-lg items-center mt-stack-sm">
+<div class="flex flex-col gap-stack-sm pr-md:gutter order-2 md:order-1">
+<h2 class="font-headline-lg text-headline-lg text-secondary">ACCESS THE ARCHIVE ANYWHERE</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                    Delve into the accumulated knowledge of a wandering immortal. Our digital compendium organizes fragments of lore, songs, and historical records for your scholarly pursuit.
+                </p>
+<button class="bg-primary text-secondary font-label-caps text-label-caps px-8 py-4 rounded-DEFAULT transition-all duration-300 btn-hover-glow w-fit mt-4 uppercase tracking-widest">
+                    DISCOVER
+                </button>
+</div>
+<div class="relative h-[500px] rounded-xl overflow-hidden border border-primary/20 group order-1 md:order-2 bg-surface-container-lowest flex items-center justify-center p-8">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent"></div>
+<img alt="Glowing Codex" class="w-full h-full object-cover mix-blend-lighten opacity-60 rounded-lg" data-alt="Vector illustration of an ancient codex emitting glowing cyan light with a storyteller silhouette sitting beside it in a dark minimal setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlZ5AFN_lsTMUEDjE4BKERu5GfINxkMdDP-U-rAg1zxqInBFDLPS8bKu2EqQlcihOcG8EYlij3AGX4S0aCXUONnNHRRMxjIRcQX_Dm8rA8PwHSx-tZe2MvkDs8l1naeBGksShdhslpWj9eJbj-jFPxdOT8NjDulTVWrO425pMFScr17XGtJnapkxO2rrJ8o1jxXgs-avcj2DgQL92wbEwi9Fuc92syAS5wkSc4Zv00EWyUOJ-Mvh9vEXbjcvZNgCYQsagsmxXDu0U"/>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-950 font-serif text-slate-400 full-width relative overflow-hidden border-t border-teal-950">
+<div class="max-w-7xl mx-auto px-8 py-20 flex flex-col md:flex-row justify-between items-start gap-12 bg-bottom bg-no-repeat bg-contain relative z-10" data-alt="Dark silhouette landscape with a subtle campfire, a faint celestial symbol in the sky, and subtle teal aurora mirroring the hero section style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhMMVBhetUBV8hxUh6-_onTLfpetJ7TWbuM_a3QKngk3aigQNuU8FDXoYu5_JhUQkiV7B-APupfiIeUIjxKS-dgXwpu0LwFRHn7ykD54HKJ46OpmeVleGfNwvCorDlcHhWA2uUvXvLYHZWWeANcAhdmMQ-PqzCYnWzEb6izR_cVLdsliJmMFkGNybzYi_mS8VTaUxLCtvF3xNShkjkqMQrzeTLsBllVviDxIElHjI7BPwbMPnfIp1j96hXGX_hgv6Q19ksMYuY0p4');">
+<!-- Overlay to ensure text readability over the background image -->
+<div class="absolute inset-0 bg-slate-950/80 z-0"></div>
+<div class="relative z-10 flex flex-col gap-4">
+<div class="text-xl font-black text-teal-400">
+                    HOID'S CHRONICLES
+                </div>
+<p class="text-sm mt-8">© HOID'S CHRONICLES. ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="relative z-10 flex flex-wrap gap-8 text-sm uppercase tracking-widest">
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">HISTORIES</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">LEGENDS</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">CHARACTERS</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">WORLDS</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">SUPPORT</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">PRIVACY</a>
+<a class="text-slate-500 hover:text-teal-300 transition-colors" href="#">TERMS</a>
+</nav>
+</div>
+</footer>
+</body></html>
