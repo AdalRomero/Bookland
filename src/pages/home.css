@@ -107,11 +107,16 @@
 }
 
 .hc-logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.05em;
-  color: #2dd4bf;
-  text-shadow: 0 0 8px rgba(45, 212, 191, 0.6);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #5eead4;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #5eead4, #2dd4bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 8px rgba(45, 212, 191, 0.4));
+  white-space: nowrap;
 }
 
 .hc-nav {
@@ -195,10 +200,15 @@
 .hc-hero-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
+  background: radial-gradient(
+    circle at center,
+    transparent 0%,
+    rgba(18, 20, 20, 0.4) 40%,
+    #121414 90%
+  ),
+  linear-gradient(
     to bottom,
-    transparent,
-    rgba(18, 20, 20, 0.5) 50%,
+    rgba(18, 20, 20, 0) 60%,
     #121414 100%
   );
 }
@@ -207,42 +217,50 @@
   position: relative;
   z-index: 10;
   text-align: center;
-  max-width: 48rem;
+  max-width: 60rem;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--hc-stack-md);
-  margin-top: var(--hc-stack-lg);
+  gap: 1.5rem;
+  animation: hero-fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes hero-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .hc-hero-label {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px;
-  line-height: 1;
-  letter-spacing: 0.15em;
+  font-size: 14px;
+  letter-spacing: 0.4em;
   font-weight: 600;
-  color: var(--hc-primary);
+  color: #5eead4;
   text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  opacity: 0.8;
 }
 
 .hc-hero h1 {
   font-family: 'Newsreader', serif;
-  font-size: 64px;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-size: 84px;
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-weight: 300;
-  color: var(--hc-secondary);
-  text-shadow: 0 0 12px rgba(118, 214, 213, 0.4);
+  color: #ffffff;
+  text-shadow: 0 0 30px rgba(118, 214, 213, 0.3);
   margin: 0;
+  font-style: italic;
 }
 
 .hc-hero-desc {
   font-family: 'Manrope', sans-serif;
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--hc-on-surface-variant);
-  max-width: 36rem;
+  font-size: 20px;
+  line-height: 1.7;
+  color: #94a3b8;
+  max-width: 40rem;
+  font-weight: 300;
 }
 
 .hc-hero-buttons {

@@ -87,17 +87,20 @@
 /* --- Carousel --- */
 .libros-carousel-container {
   width: 100%;
-  margin: 100px auto 0; /* Más espacio para no tapar el buscador */
-  overflow: visible;
+  margin: 140px auto 0; /* Margen superior amplio y fijo */
+  overflow-x: clip; /* Solo bloquea el ancho de la página */
+  overflow-y: visible; /* Permite que las sombras flotantes se vean */
   position: relative;
-  padding-bottom: 80px;
+  padding-bottom: 120px;
   touch-action: pan-y;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .carousel-perspective {
   perspective: 1000px;
   width: 200px;
-  height: 380px; /* Altura más ajustada */
+  height: 400px; /* Recuperamos un poco de altura para las sombras */
   margin: 0 auto;
   position: relative;
   display: flex;

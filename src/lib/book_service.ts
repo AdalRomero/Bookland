@@ -1,4 +1,4 @@
-import { supabase } from './supabase.ts';
+import { supabase } from "@/lib/supabase/supabase";
 
 export interface Book {
   id?: string;

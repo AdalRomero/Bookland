@@ -77,17 +77,6 @@ export default function Home() {
                                 {link}
                             </Link>
                         ))}
-                        {NAV_LINKS.map((link, i) =>
-                            link === 'MOMENTOS' ? (
-                                <Link key={link} to="/momentos" className={i === 0 ? 'active' : ''}>
-                                    {link}
-                                </Link>
-                            ) : (
-                                <a key={link} href="#" className={i === 0 ? 'active' : ''}>
-                                    {link}
-                                </a>
-                            )
-                        )}
                     </nav>
 
                     {user ? (

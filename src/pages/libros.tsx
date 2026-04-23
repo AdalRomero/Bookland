@@ -81,8 +81,8 @@ export default function Libros() {
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > 50;
-    const isRightSwipe = distance < -50;
+    const isLeftSwipe = distance > 40; // Sensibilidad un poco más alta
+    const isRightSwipe = distance < -40;
 
     if (isLeftSwipe) {
       setCarouselIndex((prev) => (prev + 1) % featuredBooks.length);
