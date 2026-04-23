@@ -133,7 +133,7 @@ const Personajes: React.FC = () => {
   };
 
   return (
-    <div className="personajes-page page-transition">
+    <div className="personajes-page">
       <Header />
       
       <main className="personajes-main">

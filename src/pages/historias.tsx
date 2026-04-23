@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import { narrarTexto } from '../lib/services/elevenlabs'
 import './historias.css'
@@ -169,10 +170,10 @@ export default function Historias() {
                             </blockquote>
 
                             <div className="historia-actions">
-                                <button className="historia-btn">
+                                <Link to={`/mundos#${story.id}`} className="historia-btn">
                                     Explorar historia
                                     <span className="material-symbols-outlined">arrow_forward</span>
-                                </button>
+                                </Link>
                                 <button 
                                     className="historia-btn-audio"
                                     onClick={() => handlePlayAudio(story.fragment, story.id)}

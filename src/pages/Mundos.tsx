@@ -19,6 +19,7 @@ import storyFrankenstein from '../assets/story_frankenstein_final.png';
 
 const WORLDS_DATA = [
   {
+    id: 'zelda',
     title: 'The Legend of Zelda',
     image: storyZelda,
     quote: 'Ah, este reino. Conozco bien su melodía, aunque tienen la exasperante costumbre de cambiar los instrumentos cada tantos siglos...',
@@ -26,6 +27,7 @@ const WORLDS_DATA = [
     files: ['Zelda']
   },
   {
+    id: 'mistborn',
     title: 'Nacidos de la bruma',
     image: storyMistborn,
     quote: 'He visto cielos de muchos colores, pero el rojo asfixiante de este mundo tiene un encanto... macabro.',
@@ -33,6 +35,7 @@ const WORLDS_DATA = [
     files: ['Imperio Final', 'Pozo de la Ascension', 'Heroe de las Eras']
   },
   {
+    id: 'stormlight',
     title: 'El ritmo de la guerra',
     image: storyStorm,
     quote: 'Guarda tu espada y saca tus pergaminos. Estás a punto de entrar a una guerra donde el descubrimiento de un erudito es más letal que un millar de soldados.',
@@ -40,6 +43,7 @@ const WORLDS_DATA = [
     files: ['Ritmo de la guerra']
   },
   {
+    id: 'godfather',
     title: 'El Padrino',
     image: storyPadrino,
     quote: 'He visto imperios galácticos derrumbarse y reyes inmortales perder la cabeza, pero este rincón del multiverso tiene una visión del poder que resulta… fascinante.',
@@ -47,6 +51,7 @@ const WORLDS_DATA = [
     files: ['Padrino']
   },
   {
+    id: 'frankenstein',
     title: 'Frankenstein — El Moderno Prometeo',
     image: storyFrankenstein,
     quote: 'He visto a dioses moldear hombres, pero nada es tan fascinante y patético como un mortal jugando a ser deidad con aguja, hilo y sobras de cementerio.',
@@ -78,7 +83,7 @@ export default function Mundos() {
   };
 
   return (
-    <div className="mundos-page page-transition">
+    <div className="mundos-page">
       <Header />
       
       <main className="mundos-main">
@@ -94,7 +99,7 @@ export default function Mundos() {
 
         <section className="mundos-list">
           {WORLDS_DATA.map((world, index) => (
-            <div key={index} className={`world-entry ${index % 2 === 0 ? 'even' : 'odd'}`}>
+            <div key={world.id} id={world.id} className={`world-entry ${index % 2 === 0 ? 'even' : 'odd'}`}>
               <div className="world-image-container">
                 <img src={world.image} alt={world.title} className="world-image" />
                 <div className="world-image-overlay" />

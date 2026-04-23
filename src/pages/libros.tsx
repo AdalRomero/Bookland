@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { 
   type Book, 
@@ -15,6 +16,32 @@ import './libros.css';
 
 import Header from '../components/Header';
 import { NAV_LINKS } from '../lib/constants';
+
+// --- ALGORITMO DE PUNTUACIÓN HEURÍSTICA ---
+const calculateBookScore = (book: any) => {
+  let score = 0;
+
+  // 1. Señales de Calidad (Basado en datos reales de Google Books)
+  if (book.average_rating) {
+    score += book.average_rating * 15; // Hasta 75 puntos
+  }
+  
+  if (book.ratings_count) {
+    // Escala logarítmica: 10 reseñas = 10pts, 100 = 20pts, 1000 = 30pts...
+    // Esto permite que libros de nicho compitan con bestsellers masivos
+    score += Math.log10(book.ratings_count) * 10; 
+  }
+
+  // 2. Calidad de Metadatos (Penalizaciones y Bonificaciones)
+  if (!book.cover_url || book.cover_url.includes('nocover')) return -100;
+  if (book.synopsis && book.synopsis.length > 200) score += 15;
+  if (book.pages && book.pages > 100) score += 10;
+
+  // 3. Entropía (Factor de varianza controlada ±30%)
+  const variance = 0.7 + (Math.random() * 0.6); 
+  
+  return score * variance;
+};
 
 export default function Libros() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -70,46 +97,94 @@ export default function Libros() {
     return () => clearInterval(timer);
   }, [featuredBooks, isPaused]);
 
-  const fetchFeaturedBooks = async (epubsList?: string[]) => {
-    const currentEpubs = epubsList || availableEpubs;
-    setFeaturedLoading(true);
-    try {
-      // Definimos las categorías que queremos mostrar
-      const categories = [
-        { name: 'Clásicos', query: 'subject:classics' },
-        { name: 'Fantasía', query: 'subject:fantasy' },
-        { name: 'Ficción', query: 'subject:fiction' }
-      ];
-
-      // Ejecutamos las búsquedas en paralelo con restricciones de idioma
-      const results = await Promise.all(
-        categories.map(cat => 
-          searchGoogleBooks(cat.query, { 
-            langRestrict: 'es', 
-            orderBy: 'relevance', 
-            maxResults: 10 
-          })
-        )
-      );
-      
-      // Aplanamos los resultados y eliminamos duplicados, vinculando EPUB si existe
-      const allBooks = results.flat().filter((b, index, self) => 
-        b.cover_url && 
-        self.findIndex(t => t.title === b.title) === index
-      ).map(book => {
-        const matchingPath = findMatchingEpub(book.title, currentEpubs);
-        return matchingPath ? { ...book, epub_path: matchingPath } : book;
-      });
-      
-      // Mezclamos para que el carrusel sea variado
-      const curated = allBooks.sort(() => Math.random() - 0.5).slice(0, 15);
-      setFeaturedBooks(curated);
-    } catch (error) {
-      console.error("Error fetching featured books", error);
-    } finally {
-      setFeaturedLoading(false);
+  // Bloquear scroll cuando cualquier modal está abierto
+  useEffect(() => {
+    if (selectedBook || showManual) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
     }
-  };
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedBook, showManual]);
+
+  const fetchFeaturedBooks = async (epubsList?: string[]) => {
+  const currentEpubs = epubsList || availableEpubs;
+  setFeaturedLoading(true);
+
+  try {
+    // 1. Semillas Globales: Una mezcla de todo lo bueno, traducido e hispano.
+    const globalCultSeeds = [
+      // Clásicos Universales (Usa el título en español para forzar la traducción exacta)
+      'intitle:"Orgullo y Prejuicio"', 'intitle:"Crimen y Castigo"', 
+      'intitle:"El retrato de Dorian Gray"', 'intitle:"1984"',
+      
+      // Fantasía y Épica (Usa el autor, langRestrict hará que salgan en español)
+      'inauthor:"Brandon Sanderson"', 'inauthor:"J.R.R. Tolkien"', 
+      'inauthor:"Patrick Rothfuss"', 'intitle:"Harry Potter"',
+      
+      // Joyas Hispanas
+      'intitle:"Cien años de soledad"', 'intitle:"Pedro Páramo"', 
+      'intitle:"Don Quijote de la Mancha"', 'inauthor:"Jorge Luis Borges"',
+      
+      // Misterio, Terror y Culto Moderno
+      'inauthor:"Stephen King"', 'inauthor:"Edgar Allan Poe"',
+      'inauthor:"Agatha Christie"', 'inauthor:"Neil Gaiman"'
+    ];
+
+    // Seleccionamos 4 semillas al azar para esta sesión
+    const randomSeeds = globalCultSeeds.sort(() => 0.5 - Math.random()).slice(0, 4);
+
+    // 2. Traemos un lote grande (60 libros) forzando el idioma
+    const rawResults = await Promise.all(
+      randomSeeds.map(query => 
+        searchGoogleBooks(query, { 
+          langRestrict: 'es', // <-- Esto es lo que asegura el idioma
+          orderBy: 'relevance', 
+          maxResults: 15,
+          printType: 'books'
+        })
+      )
+    );
+
+    // 3. Aplanamos y eliminamos duplicados exactos
+    const uniqueBooks = rawResults.flat().filter((book, index, self) =>
+      index === self.findIndex((t) => t.title === book.title)
+    );
+
+    // 4. Aplicamos el algoritmo de puntuación
+    const scoredBooks = uniqueBooks.map(book => {
+      let score = calculateBookScore(book); // Tu función que revisa ratings y descripciones
+
+      // Bono por idioma
+      if (book.language === 'es') {
+        score += 25; 
+      } else if (book.language && book.language !== 'es') {
+        score -= 50; 
+      }
+
+      return { ...book, algorithmScore: score };
+    });
+
+    // 5. Ordenamos por puntuación y seleccionamos el top 15
+    const topTierBooks = scoredBooks
+      .sort((a, b) => (b.algorithmScore || 0) - (a.algorithmScore || 0))
+      .slice(0, 15);
+
+    // 6. Vinculamos EPUBs locales y mezclamos un poco el orden final
+    const finalBooks = topTierBooks.map(book => {
+      const matchingPath = findMatchingEpub(book.title, currentEpubs);
+      return matchingPath ? { ...book, epub_path: matchingPath } : book;
+    }).sort(() => Math.random() - 0.5);
+
+    setFeaturedBooks(finalBooks);
+  } catch (error) {
+    console.error("Error en el algoritmo de libros:", error);
+  } finally {
+    setFeaturedLoading(false);
+  }
+};
 
 
   const handleBookClick = (i: number, book: Book) => {
@@ -176,7 +251,7 @@ export default function Libros() {
   };
 
   return (
-    <div className="libros-page page-transition">
+    <div className="libros-page">
       <Header />
 
       <main className="libros-main">
@@ -212,6 +287,9 @@ export default function Libros() {
                         onClick={() => handleBookClick(i, book)}
                       >
                         <div className="floating-book-card">
+                          {(book as any).algorithmScore > 80 && (
+                            <div className="elite-tag">RECOMENDADO</div>
+                          )}
                           <div className="floating-cover">
                             <img src={book.cover_url} alt={book.title} />
                             <div className="cover-shadow"></div>
@@ -320,7 +398,7 @@ export default function Libros() {
       </main>
 
       {/* ── Book Detail Modal ── */}
-      {selectedBook && (
+      {selectedBook && createPortal(
         <div className="book-modal-overlay" onClick={() => setSelectedBook(null)}>
           <div className="book-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="close-modal" onClick={() => setSelectedBook(null)}>
@@ -375,48 +453,50 @@ export default function Libros() {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── Manual Prohibido Modal ── */}
-      {showManual && (
+      {showManual && createPortal(
         <div className="book-modal-overlay" onClick={() => setShowManual(false)}>
-          <div className="book-modal manual-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '500px' }}>
+          <div className="book-modal manual-modal" onClick={e => e.stopPropagation()}>
             <button className="close-modal" onClick={() => setShowManual(false)}>×</button>
             <div className="modal-content">
-              <h2 style={{ color: '#ff4d4d', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <h2>
                 <span className="material-symbols-outlined">report_problem</span>
                 MANUAL DE "NO" PIRATERÍA
               </h2>
-              <p style={{ fontStyle: 'italic', opacity: 0.8, marginBottom: '20px' }}>
+              <p className="manual-intro">
                 "La piratería es mala, amigos. Muy mala. Por eso, BAJO NINGUNA CIRCUNSTANCIA sigas estos pasos para conseguir libros gratis..."
               </p>
               
-              <div className="manual-steps" style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              <div className="manual-steps">
                 <div className="step">
-                  <strong style={{ color: '#a288e3' }}>1. NO entres aquí:</strong>
-                  <p>Ignora completamente este enlace: <a href="https://ww3.lectulandia.co/" target="_blank" rel="noopener noreferrer" style={{ color: '#76d6d5' }}>Lectulandia</a>. Es un lugar lleno de libros que no deberías descargar.</p>
+                  <strong>1. NO entres aquí:</strong>
+                  <p>Ignora completamente este enlace: <a href="https://ww3.lectulandia.co/" target="_blank" rel="noopener noreferrer">Lectulandia</a>. Es un lugar lleno de libros que no deberías descargar.</p>
                 </div>
                 <div className="step">
-                  <strong style={{ color: '#a288e3' }}>2. NO busques tu libro:</strong>
+                  <strong>2. NO busques tu libro:</strong>
                   <p>Si por error entras, no uses la barra de búsqueda para encontrar esa joya oculta o libro que te falta.</p>
                 </div>
                 <div className="step">
-                  <strong style={{ color: '#a288e3' }}>3. EVITA los botones azules:</strong>
-                  <p>Primero verás uno que dice "EPUB". No lo toques. Si se abre publicidad, ciérrala (unas 2 o 3 veces) hasta que aparezca el botón definitivo que dice <strong style={{ color: '#76d6d5' }}>"Download now"</strong>. Ni se te ocurra darle clic y esperar pacientemente a que la descarga inicie sola.</p>
+                  <strong>3. EVITA los botones azules:</strong>
+                  <p>Primero verás uno que dice "EPUB". No lo toques. Si se abre publicidad, ciérrala (unas 2 o 3 veces) hasta que aparezca el botón definitivo que dice <span className="highlight-text">"Download now"</span>. Ni se te ocurra darle clic y esperar pacientemente a que la descarga inicie sola.</p>
                 </div>
                 <div className="step">
-                  <strong style={{ color: '#a288e3' }}>4. USA el lector:</strong>
+                  <strong>4. USA el lector:</strong>
                   <p>Una vez que "no" lo descargues, no uses el <strong>Lithium APK</strong> que te dejé arriba para leerlo cómodamente en tu celular.</p>
                 </div>
               </div>
 
-              <div style={{ marginTop: '30px', padding: '15px', background: 'rgba(255,77,77,0.1)', borderRadius: '8px', fontSize: '0.85rem' }}>
+              <div className="manual-warning">
                 <strong>Advertencia:</strong> Este manual es meramente informativo sobre lo que NO debes hacer. Guiño, guiño.
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* ── Footer ── */}

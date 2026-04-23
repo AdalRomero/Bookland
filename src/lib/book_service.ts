@@ -12,6 +12,9 @@ export interface Book {
   pages?: number;
   published_date?: string;
   google_books_id?: string;
+  average_rating?: number;
+  ratings_count?: number;
+  language?: string;
 }
 
 const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
@@ -40,6 +43,9 @@ export const searchGoogleBooks = async (
         isbn: info.industryIdentifiers?.find((id: any) => id.type === 'ISBN_13')?.identifier || '',
         pages: info.pageCount || 0,
         published_date: info.publishedDate || '',
+        average_rating: info.averageRating || 0,
+        ratings_count: info.ratingsCount || 0,
+        language: info.language || '',
       };
     });
   } catch (error) {
