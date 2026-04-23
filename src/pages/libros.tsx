@@ -261,7 +261,7 @@ export default function Libros() {
             </p>
           </div>
 
-          <div className="carousel-section" style={{ margin: '40px 0' }}>
+          <div className="carousel-section">
             {featuredLoading ? (
               <div className="carousel-loader">CARGANDO EL ARCHIVO...</div>
             ) : featuredBooks.length > 0 && (
