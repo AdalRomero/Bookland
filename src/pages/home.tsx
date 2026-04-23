@@ -25,10 +25,14 @@ export default function Home() {
                 <div className="hc-header-inner">
                     <div className="hc-logo">CRONICAS DE UN SALTA MUNDOS</div>
                     <nav className="hc-nav">
-                        {NAV_LINKS.map((link, i) => (
-                            <a key={link} href="#" className={i === 0 ? 'active' : ''}>
+                        {NAV_LINKS.map((link) => (
+                            <Link 
+                                key={link} 
+                                to={link === 'LIBROS' ? '/libros' : '#'} 
+                                className={link === 'LIBROS' ? 'active' : ''}
+                            >
                                 {link}
-                            </a>
+                            </Link>
                         ))}
                     </nav>
                     <Link to="/registro" className="hc-header-btn">Únete ahora</Link>
