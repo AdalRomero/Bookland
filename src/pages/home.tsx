@@ -9,6 +9,9 @@ import cosmicRealm from '../assets/cosmic-realm.png'
 import glowingCodex from '../assets/glowing-codex.png'
 import footerBg from '../assets/footer-bg.png'
 
+import Header from '../components/Header'
+import { FOOTER_LINKS } from '../lib/constants'
+
 const FEATURES = [
     { icon: 'history_edu', title: 'Leyendas antiguas', desc: 'Cuentos susurrados a lo largo de milenios, preservados en el tejido mismo de la realidad.' },
     { icon: 'menu_book', title: 'Historias atemporales', desc: 'Historias que trascienden mundos, portadoras de verdades veladas en metáforas.' },
@@ -18,28 +21,21 @@ const FEATURES = [
     { icon: 'music_note', title: 'Tradiciones Orales', desc: 'Experimenta el ritmo de mitos transmitidos a través del canto y el aliento.' },
 ]
 
-const NAV_LINKS = ['HISTORIAS', 'MOMENTOS', 'LIBROS', 'PERSONAJES', 'MUNDOS']
-const FOOTER_LINKS = ['HISTORIAS', 'MOMENTOS', 'LIBROS', 'PERSONAJES', 'MUNDOS', 'PRIVACIDAD', 'TERMINOS']
-
 export default function Home() {
     const [user, setUser] = useState<User | null>(null)
-    const [menuOpen, setMenuOpen] = useState(false)
 
     useEffect(() => {
-        // Get current session
+        // Get current session for local page logic (like the OÍR button)
         supabase.auth.getSession().then(({ data: { session } }) => {
             setUser(session?.user ?? null)
         })
 
-        // Listen for auth changes
         const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user ?? null)
         })
 
         return () => subscription.unsubscribe()
     }, [])
-
-    const username = user?.user_metadata?.username as string | undefined
 
     const [isGeneratingAudio, setIsGeneratingAudio] = useState(false)
 
@@ -55,74 +51,9 @@ export default function Home() {
         }
     }
 
-    async function handleLogout() {
-        await supabase.auth.signOut()
-        setUser(null)
-        setMenuOpen(false)
-    }
-
     return (
         <div className="hc-page">
-            {/* ── TopNavBar ── */}
-            <header className="hc-header">
-                <div className="hc-header-inner">
-                    <div className="hc-logo">CRONICAS DE UN SALTA MUNDOS</div>
-                    <nav className="hc-nav">
-                        {NAV_LINKS.map((link) => (
-                            <Link 
-                                key={link} 
-                                to={link === 'LIBROS' ? '/libros' : '#'} 
-                                className={link === 'LIBROS' ? 'active' : ''}
-                            >
-                                {link}
-                            </Link>
-                        ))}
-                    </nav>
-
-                    {user ? (
-                        <div className="hc-user-menu">
-                            <button
-                                className="hc-user-btn"
-                                onClick={() => setMenuOpen(!menuOpen)}
-                            >
-                                <span className="hc-user-avatar">
-                                    {(username ?? user.email ?? '?')[0].toUpperCase()}
-                                </span>
-                                <span className="hc-user-name">
-                                    {username ?? user.email}
-                                </span>
-                                <span className="material-symbols-outlined hc-user-chevron">
-                                    {menuOpen ? 'expand_less' : 'expand_more'}
-                                </span>
-                            </button>
-                            {menuOpen && (
-                                <div className="hc-user-dropdown">
-                                    <div className="hc-dropdown-header">
-                                        <span className="hc-dropdown-name">{username ?? 'Usuario'}</span>
-                                        <span className="hc-dropdown-email">{user.email}</span>
-                                    </div>
-                                    <div className="hc-dropdown-divider" />
-                                    <button className="hc-dropdown-item" onClick={() => { setMenuOpen(false) }}>
-                                        <span className="material-symbols-outlined">person</span>
-                                        Mi perfil
-                                    </button>
-                                    <button className="hc-dropdown-item" onClick={() => { setMenuOpen(false) }}>
-                                        <span className="material-symbols-outlined">settings</span>
-                                        Configuración
-                                    </button>
-                                    <div className="hc-dropdown-divider" />
-                                    <button className="hc-dropdown-item hc-dropdown-logout" onClick={handleLogout}>
-                                        <span className="material-symbols-outlined">logout</span>
-                                        Cerrar sesión
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    ) : (
-                        <Link to="/registro" className="hc-header-btn">Únete ahora</Link>
-                    )}
-                </div>
-            </header>
+            <Header />
 
             <main className="hc-main">
                 {/* ── Hero Section ── */}
@@ -232,9 +163,9 @@ export default function Home() {
                     </div>
                     <nav className="hc-footer-nav">
                         {FOOTER_LINKS.map((link) => (
-                            <a key={link} href="#">
-                                {link}
-                            </a>
+                            <Link key={link.name} to={link.path}>
+                                {link.name}
+                            </Link>
                         ))}
                     </nav>
                 </div>

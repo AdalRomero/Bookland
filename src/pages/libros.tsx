@@ -4,7 +4,8 @@ import { type Book, searchGoogleBooks, getLocalBooks, saveBookToLocal } from '..
 import footerBg from '../assets/footer-bg.png';
 import './libros.css';
 
-const NAV_LINKS = ['HISTORIAS', 'MOMENTOS', 'LIBROS', 'PERSONAJES', 'MUNDOS'];
+import Header from '../components/Header';
+import { NAV_LINKS } from '../lib/constants';
 
 export default function Libros() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -114,24 +115,7 @@ export default function Libros() {
 
   return (
     <div className="libros-page">
-      {/* ── TopNavBar ── */}
-      <header className="hc-header">
-        <div className="hc-header-inner">
-          <Link to="/" className="hc-logo">CRONICAS DE UN SALTA MUNDOS</Link>
-          <nav className="hc-nav">
-            {NAV_LINKS.map((link) => (
-              <Link 
-                key={link} 
-                to={link === 'LIBROS' ? '/libros' : '#'} 
-                className={link === 'LIBROS' ? 'active' : ''}
-              >
-                {link}
-              </Link>
-            ))}
-          </nav>
-          <Link to="/registro" className="hc-header-btn">Únete ahora</Link>
-        </div>
-      </header>
+      <Header />
 
       <main className="libros-main">
         <section className="libros-hero">
@@ -321,7 +305,7 @@ export default function Libros() {
           </div>
           <nav className="hc-footer-nav">
             {NAV_LINKS.map((link) => (
-              <Link key={link} to="#">{link}</Link>
+              <Link key={link.name} to={link.path}>{link.name}</Link>
             ))}
           </nav>
         </div>

@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase/supabase'
 import type { User } from '@supabase/supabase-js'
 import toast, { Toaster } from 'react-hot-toast'
 import './momentos.css'
+import Header from '../components/Header'
 
 /* ── Types ── */
 interface PostImage {
@@ -513,29 +514,14 @@ export default function Momentos() {
   return (
     <div className="momentos-page">
       <Toaster position="bottom-center" />
-      {/* Top Bar */}
-      <div className="momentos-topbar">
-        <div className="momentos-topbar-inner">
-          <Link to="/" className="momentos-brand">
-            <span className="momentos-brand-text">CRÓNICAS</span>
-            <span className="momentos-brand-divider" />
-            <span className="momentos-brand-section">Momentos</span>
-          </Link>
-
-          <div className="momentos-topbar-actions">
-            <Link to="/" className="momentos-btn-back">
-              <span className="material-symbols-outlined">arrow_back</span>
-              Inicio
-            </Link>
-            {user && (
-              <button className="momentos-btn-new" onClick={() => setShowNewPost(true)}>
-                <span className="material-symbols-outlined">edit_square</span>
-                Nuevo
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      <Header>
+        {user && (
+          <button className="momentos-btn-new" onClick={() => setShowNewPost(true)}>
+            <span className="material-symbols-outlined">edit_square</span>
+            Nuevo
+          </button>
+        )}
+      </Header>
 
       {/* Feed */}
       <div className="momentos-feed">

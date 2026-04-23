@@ -7,58 +7,6 @@
   color: var(--hc-on-surface, #e2e2e2);
 }
 
-/* ── Sticky Header ── */
-.momentos-topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(18, 20, 20, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(118, 214, 213, 0.1);
-}
-
-.momentos-topbar-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.75rem 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.momentos-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-}
-
-.momentos-brand-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--hc-primary, #76d6d5);
-  letter-spacing: 0.08em;
-}
-
-.momentos-brand-divider {
-  width: 1px;
-  height: 20px;
-  background: rgba(118, 214, 213, 0.2);
-}
-
-.momentos-brand-section {
-  font-family: 'Manrope', sans-serif;
-  font-size: 0.85rem;
-  color: var(--hc-on-surface-variant, #bdc9c8);
-}
-
-.momentos-topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
 
 .momentos-btn-new {
   display: flex;
@@ -88,30 +36,6 @@
   font-size: 1.1rem;
 }
 
-.momentos-btn-back {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.5rem 0.75rem;
-  background: none;
-  border: 1px solid rgba(118, 214, 213, 0.15);
-  border-radius: 8px;
-  color: var(--hc-on-surface-variant, #bdc9c8);
-  font-family: 'Manrope', sans-serif;
-  font-size: 0.8rem;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.momentos-btn-back:hover {
-  border-color: var(--hc-primary, #76d6d5);
-  color: var(--hc-primary, #76d6d5);
-}
-
-.momentos-btn-back .material-symbols-outlined {
-  font-size: 1rem;
-}
 
 /* ── Feed Layout ── */
 .momentos-feed {
