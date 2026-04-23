@@ -7,10 +7,8 @@ import './home.css'
 import heroBg from '../assets/hero-bg.png'
 import cosmicRealm from '../assets/cosmic-realm.png'
 import glowingCodex from '../assets/glowing-codex.png'
-import footerBg from '../assets/footer-bg.png'
-
 import Header from '../components/Header'
-import { FOOTER_LINKS } from '../lib/constants'
+import Footer from '../components/Footer'
 
 const FEATURES = [
     { icon: 'history_edu', title: 'Leyendas antiguas', desc: 'Cuentos susurrados a lo largo de milenios, preservados en el tejido mismo de la realidad.' },
@@ -148,28 +146,7 @@ export default function Home() {
                 </section>
             </main>
 
-            {/* ── Footer ── */}
-            <footer className="hc-footer">
-                <div
-                    className="hc-footer-inner"
-                    style={{ backgroundImage: `url(${footerBg})` }}
-                >
-                    <div className="hc-footer-overlay" />
-                    <div className="hc-footer-brand">
-                        <div className="hc-footer-logo">Crónicas de un Saltamundos</div>
-                        <p className="hc-footer-copy">
-                            © Crónicas de un Saltamundos. TODOS LOS DERECHOS RESERVADOS.
-                        </p>
-                    </div>
-                    <nav className="hc-footer-nav">
-                        {FOOTER_LINKS.map((link) => (
-                            <Link key={link.name} to={link.path}>
-                                {link.name}
-                            </Link>
-                        ))}
-                    </nav>
-                </div>
-            </footer>
+            <Footer />
         </div>
     )
 }

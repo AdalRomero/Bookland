@@ -5,6 +5,7 @@ import type { User } from '@supabase/supabase-js'
 import toast, { Toaster } from 'react-hot-toast'
 import './momentos.css'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import stormBg from '../assets/momentos-storm-bg.png'
 
 /* ── Types ── */
@@ -645,6 +646,7 @@ export default function Momentos() {
           onCreated={handlePostCreated}
         />
       )}
+      <Footer />
     </div>
   )
 }

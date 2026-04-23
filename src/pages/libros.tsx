@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
 import { 
   type Book, 
   searchGoogleBooks, 
@@ -11,11 +10,10 @@ import {
   getEpubDownloadUrl 
 } from '../lib/book_service.ts';
 import { supabase } from '../lib/supabase/supabase';
-import footerBg from '../assets/footer-bg.png';
 import './libros.css';
 
 import Header from '../components/Header';
-import { NAV_LINKS } from '../lib/constants';
+import Footer from '../components/Footer';
 
 // --- ALGORITMO DE PUNTUACIÓN HEURÍSTICA ---
 const calculateBookScore = (book: any) => {
@@ -499,26 +497,7 @@ export default function Libros() {
         document.body
       )}
 
-      {/* ── Footer ── */}
-      <footer className="hc-footer">
-        <div
-          className="hc-footer-inner"
-          style={{ backgroundImage: `url(${footerBg})` }}
-        >
-          <div className="hc-footer-overlay" />
-          <div className="hc-footer-brand">
-            <div className="hc-footer-logo">Crónicas de un Saltamundos</div>
-            <p className="hc-footer-copy">
-              © Crónicas de un Saltamundos. TODOS LOS DERECHOS RESERVADOS.
-            </p>
-          </div>
-          <nav className="hc-footer-nav">
-            {NAV_LINKS.map((link) => (
-              <Link key={link.name} to={link.path}>{link.name}</Link>
-            ))}
-          </nav>
-        </div>
-      </footer>
+      <Footer />
 
       {/* ── Custom Notification Banner ── */}
       {notification && (

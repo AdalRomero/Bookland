@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { supabase } from '../lib/supabase/supabase';
 import { 
   getCharacters, 
@@ -238,8 +239,7 @@ const Personajes: React.FC = () => {
 
         {!user && (
           <div className="auth-notice">
-            <p>«Incluso los mejores cronistas necesitan una identidad para que sus escritos perduren.».</p>
-            <a href="/login" className="hc-btn-primary">INICIAR SESIÓN</a>
+            <span>«Incluso los mejores cronistas necesitan una identidad para que sus escritos perduren.»</span>
           </div>
         )}
 
@@ -276,6 +276,7 @@ const Personajes: React.FC = () => {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

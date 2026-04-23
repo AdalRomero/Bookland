@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import { narrarTexto } from '../lib/services/elevenlabs'
 import './historias.css'
 
@@ -196,6 +197,7 @@ export default function Historias() {
                     </section>
                 ))}
             </div>
+            <Footer />
         </div>
     )
 }

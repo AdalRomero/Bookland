@@ -1,0 +1,146 @@
+.hc-footer {
+  background: #020617;
+  font-family: serif;
+  color: #94a3b8;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(0, 128, 128, 0.15);
+  margin-top: auto; /* Push to bottom if flex container */
+}
+
+.hc-footer-inner {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  z-index: 10;
+}
+
+.hc-footer-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.8);
+  z-index: 0;
+}
+
+.hc-footer-brand {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hc-footer-logo {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #2dd4bf;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hc-footer-copy {
+  font-size: 0.875rem;
+  margin-top: 2rem;
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+.hc-footer-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.hc-footer-nav a {
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.hc-footer-nav a:hover {
+  color: #5eead4;
+  letter-spacing: 0.2em;
+}
+
+/* ── Scroll to Top Button ── */
+.hc-scroll-top-btn {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 30;
+  padding: 10px;
+  transition: transform 0.3s ease;
+}
+
+.hc-scroll-top-btn:hover {
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.scroll-btn-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(118, 214, 213, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(18, 20, 20, 0.8);
+  backdrop-filter: blur(8px);
+  color: #5eead4;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.hc-scroll-top-btn:hover .scroll-btn-circle {
+  border-color: #5eead4;
+  box-shadow: 0 0 20px rgba(94, 234, 212, 0.3);
+  background: rgba(118, 214, 213, 0.1);
+}
+
+.scroll-btn-circle .material-symbols-outlined {
+  font-size: 20px;
+  font-variation-settings: 'wght' 300;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hc-footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    gap: 2.5rem;
+  }
+
+  .hc-footer-nav {
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .hc-footer-copy {
+    margin-top: 1rem;
+  }
+  
+  .hc-scroll-top-btn {
+    top: -22px;
+  }
+}
