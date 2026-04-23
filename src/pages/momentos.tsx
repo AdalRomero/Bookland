@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from 'react'
+import { useState, useEffect, useRef, type FormEvent, type ChangeEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase/supabase'
 import type { User } from '@supabase/supabase-js'
@@ -256,8 +256,43 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
   const [titulo, setTitulo] = useState(initialPost?.titulo ?? '')
   const [contenido, setContenido] = useState(initialPost?.contenido ?? '')
   const [imagenUrl, setImagenUrl] = useState(initialPost?.post_imagenes?.[0]?.imagen_url ?? initialPost?.imagen_fondo_url ?? '')
+  
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(initialPost?.post_imagenes?.[0]?.imagen_url ?? initialPost?.imagen_fondo_url ?? null)
+  
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+
+  const imageInputRef = useRef<HTMLInputElement>(null)
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setImageFile(file)
+      setImagePreview(URL.createObjectURL(file))
+    }
+  }
+
+  async function uploadFile(file: File, folder: string) {
+    const fileExt = file.name.split('.').pop()
+    const fileName = `${Math.random()}.${fileExt}`
+    const filePath = `${user.id}/${folder}/${fileName}`
+
+    const { error: uploadError } = await supabase.storage
+      .from('moments') // Usamos el nuevo bucket exclusivo para momentos
+      .upload(filePath, file)
+
+    if (uploadError) {
+      console.error('Upload error:', uploadError)
+      throw new Error(`Error al subir ${folder}: ${uploadError.message}`)
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('moments')
+      .getPublicUrl(filePath)
+    
+    return urlData.publicUrl
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -267,6 +302,12 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
     setError('')
 
     try {
+      let currentImageUrl = imagenUrl
+
+      if (imageFile) {
+        currentImageUrl = await uploadFile(imageFile, 'images')
+      }
+
       if (initialPost) {
         // Edit mode
         const { data: postData, error: postErr } = await supabase
@@ -274,7 +315,7 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
           .update({
             titulo: titulo.trim(),
             contenido: contenido.trim(),
-            imagen_fondo_url: imagenUrl.trim() || null,
+            imagen_fondo_url: currentImageUrl || null,
           })
           .eq('id', initialPost.id)
           .select('*')
@@ -282,13 +323,12 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
 
         if (postErr) throw postErr
 
-        // Delete old images and add the new one
         await supabase.from('post_imagenes').delete().eq('post_id', initialPost.id)
         
-        if (imagenUrl.trim()) {
+        if (currentImageUrl) {
           await supabase.from('post_imagenes').insert({
             post_id: initialPost.id,
-            imagen_url: imagenUrl.trim(),
+            imagen_url: currentImageUrl,
             descripcion_alt: titulo.trim(),
             orden: 0,
           })
@@ -297,8 +337,8 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
         const updatedPost: Post = {
           ...initialPost,
           ...postData,
-          post_imagenes: imagenUrl.trim()
-            ? [{ id: 0, imagen_url: imagenUrl.trim(), descripcion_alt: titulo.trim(), orden: 0 }]
+          post_imagenes: currentImageUrl
+            ? [{ id: 0, imagen_url: currentImageUrl, descripcion_alt: titulo.trim(), orden: 0 }]
             : [],
         }
 
@@ -313,18 +353,17 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
             titulo: titulo.trim(),
             contenido: contenido.trim(),
             estado: 'publicado',
-            imagen_fondo_url: imagenUrl.trim() || null,
+            imagen_fondo_url: currentImageUrl || null,
           })
           .select('*')
           .single()
 
         if (postErr) throw postErr
 
-        // If image URL provided, insert into post_imagenes
-        if (imagenUrl.trim()) {
+        if (currentImageUrl) {
           await supabase.from('post_imagenes').insert({
             post_id: postData.id,
-            imagen_url: imagenUrl.trim(),
+            imagen_url: currentImageUrl,
             descripcion_alt: titulo.trim(),
             orden: 0,
           })
@@ -336,8 +375,8 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
             username: user.user_metadata?.username ?? user.email ?? 'Tú',
             avatar_url: null,
           },
-          post_imagenes: imagenUrl.trim()
-            ? [{ id: 0, imagen_url: imagenUrl.trim(), descripcion_alt: titulo.trim(), orden: 0 }]
+          post_imagenes: currentImageUrl
+            ? [{ id: 0, imagen_url: currentImageUrl, descripcion_alt: titulo.trim(), orden: 0 }]
             : [],
           comentarios: [],
         }
@@ -365,36 +404,52 @@ function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; o
         <form onSubmit={handleSubmit}>
           <div className="momento-modal-body">
             {error && <div className="momento-error">{error}</div>}
-            <div>
-              <label htmlFor="new-post-title">Título del momento</label>
-              <input
-                id="new-post-title"
-                type="text"
-                placeholder="Ej: El momento que cambió todo en..."
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="new-post-content">Tu momento favorito</label>
-              <textarea
-                id="new-post-content"
-                placeholder="Describe ese momento del libro que te marcó..."
-                value={contenido}
-                onChange={(e) => setContenido(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="new-post-image">URL de imagen (opcional)</label>
-              <input
-                id="new-post-image"
-                type="url"
-                placeholder="https://ejemplo.com/imagen.jpg"
-                value={imagenUrl}
-                onChange={(e) => setImagenUrl(e.target.value)}
-              />
+            <div className="momento-modal-grid">
+              <div className="momento-modal-col">
+                <div>
+                  <label htmlFor="new-post-title">Título del momento</label>
+                  <input
+                    id="new-post-title"
+                    type="text"
+                    placeholder="Ej: El momento que cambió todo en..."
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="new-post-content">Tu momento favorito</label>
+                  <textarea
+                    id="new-post-content"
+                    placeholder="Describe ese momento del libro que te marcó..."
+                    value={contenido}
+                    onChange={(e) => setContenido(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="momento-modal-col">
+                <div>
+                  <label>Retrato del momento</label>
+                  <div className="momento-image-upload" onClick={() => imageInputRef.current?.click()}>
+                    {imagePreview ? (
+                      <img src={imagePreview} alt="Preview" />
+                    ) : (
+                      <div className="momento-upload-placeholder">
+                        <span className="material-symbols-outlined">add_a_photo</span>
+                        <span>Imagen</span>
+                      </div>
+                    )}
+                  </div>
+                  <input 
+                    type="file" 
+                    ref={imageInputRef} 
+                    onChange={handleImageChange} 
+                    style={{ display: 'none' }} 
+                    accept="image/*"
+                  />
+                </div>
+              </div>
             </div>
           </div>
           <div className="momento-modal-footer">
@@ -440,7 +495,7 @@ export default function Momentos() {
         // 1. Fetch all published posts with their images
         const { data: postsData, error: postsErr } = await supabase
           .from('posts')
-          .select('*, post_imagenes(id, imagen_url, descripcion_alt, orden)')
+          .select('id, autor_id, titulo, contenido, created_at, imagen_fondo_url, color_fondo, estado, post_imagenes(id, imagen_url, descripcion_alt, orden)')
           .eq('estado', 'publicado')
           .order('created_at', { ascending: false })
 

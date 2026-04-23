@@ -273,6 +273,27 @@
   pointer-events: none;
 }
 
+/* ── Audio Player ── */
+.momento-audio-container {
+  padding: 0.5rem 1.25rem;
+  background: rgba(118, 214, 213, 0.03);
+}
+
+.momento-audio-player {
+  width: 100%;
+  height: 32px;
+  border-radius: 8px;
+  outline: none;
+}
+
+/* Customizing basic audio controls (minimal effort) */
+.momento-audio-player::-webkit-media-controls-enclosure {
+  background: transparent;
+}
+.momento-audio-player::-webkit-media-controls-panel {
+  background: transparent;
+}
+
 /* ── Card Body ── */
 .momento-body {
   padding: 1rem 1.25rem;
@@ -605,6 +626,95 @@
   color: rgba(189, 201, 200, 0.4);
 }
 
+.momento-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.momento-modal-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Image Upload Preview ── */
+.momento-image-upload {
+  width: 100%;
+  height: 160px;
+  background: rgba(18, 20, 20, 0.4);
+  border: 2px dashed rgba(118, 214, 213, 0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.momento-image-upload:hover {
+  border-color: var(--hc-primary, #76d6d5);
+  background: rgba(118, 214, 213, 0.05);
+}
+
+.momento-image-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.momento-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--hc-on-surface-variant, #bdc9c8);
+  opacity: 0.6;
+}
+
+.momento-upload-placeholder .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+/* ── Audio Upload Preview ── */
+.momento-audio-upload {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(18, 20, 20, 0.4);
+  border: 1px solid rgba(118, 214, 213, 0.12);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.momento-audio-upload:hover {
+  border-color: var(--hc-primary, #76d6d5);
+}
+
+.momento-audio-upload.has-file {
+  background: rgba(118, 214, 213, 0.08);
+  border-color: var(--hc-primary, #76d6d5);
+  color: var(--hc-primary, #76d6d5);
+}
+
+.momento-audio-upload .material-symbols-outlined {
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+
+.momento-audio-upload span:last-child {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .momento-modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -735,6 +845,12 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 600px) {
+  .momento-modal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 520px) {
   .momentos-feed {
     padding: 1rem 0.5rem 3rem;
