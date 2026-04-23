@@ -57,7 +57,9 @@ export default function Header({ children }: { children?: React.ReactNode }) {
     return (
         <header className="hc-header">
             <div className="hc-header-inner">
-                <Link to="/" className="hc-logo">CRONICAS DE UN SALTA MUNDOS</Link>
+                <Link to="/" className="hc-logo">
+                    CRONICAS DE UN SALTA MUNDOS
+                </Link>
                 <nav className="hc-nav">
                     {NAV_LINKS.map((link) => (
                         <Link 
@@ -70,8 +72,10 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                     ))}
                 </nav>
 
-                <div className="hc-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    {children}
+                <div className="hc-header-actions">
+                    <div className="hc-header-children">
+                        {children}
+                    </div>
                     {user ? (
                         <div className="hc-user-menu">
                         <button
@@ -122,7 +126,7 @@ export default function Header({ children }: { children?: React.ReactNode }) {
                 <div className="hc-mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
                     <div className="hc-mobile-menu" onClick={(e) => e.stopPropagation()}>
                         <div className="hc-mobile-menu-header">
-                            <span className="hc-logo">CRONICAS</span>
+                            <span className="hc-logo">CRONICAS DE UN SALTA MUNDOS</span>
                             <button className="hc-mobile-close" onClick={() => setMobileMenuOpen(false)}>
                                 <span className="material-symbols-outlined">close</span>
                             </button>
@@ -159,7 +163,10 @@ export default function Header({ children }: { children?: React.ReactNode }) {
 
             {/* Floating Action Button (FAB) */}
             {createPortal(
-                <div className={`hc-fab-container ${showFab ? 'visible' : ''} ${mobileMenuOpen ? 'menu-open' : ''}`}>
+                <div className={`hc-fab-container ${showFab ? 'visible' : ''} ${mobileMenuOpen ? 'menu-open' : ''} mobile-view`}>
+                    <div className="hc-fab-children">
+                        {children}
+                    </div>
                     <button 
                         className="hc-fab-btn scroll-top" 
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
