@@ -5,6 +5,40 @@
   min-height: 100svh;
   background: var(--hc-background, #121414);
   color: var(--hc-on-surface, #e2e2e2);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Storm Background ── */
+.momentos-storm-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 0.35;
+  pointer-events: none;
+  animation: storm-drift 30s ease-in-out infinite alternate;
+}
+
+@keyframes storm-drift {
+  0%   { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.06) translateY(-12px); }
+}
+
+.momentos-storm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      rgba(18, 20, 20, 0.7) 0%,
+      rgba(18, 20, 20, 0.4) 30%,
+      rgba(18, 20, 20, 0.5) 70%,
+      rgba(18, 20, 20, 0.95) 100%
+    );
 }
 
 /* ── Top Bar ── */
@@ -117,6 +151,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Post Card ── */

@@ -1,5 +1,5 @@
 export const NAV_LINKS = [
-    { name: 'HISTORIAS', path: '#' },
+    { name: 'HISTORIAS', path: '/historias' },
     { name: 'MOMENTOS', path: '/momentos' },
     { name: 'LIBROS', path: '/libros' },
     { name: 'PERSONAJES', path: '#' },
@@ -7,7 +7,7 @@ export const NAV_LINKS = [
 ]
 
 export const FOOTER_LINKS = [
-    { name: 'HISTORIAS', path: '#' },
+    { name: 'HISTORIAS', path: '/historias' },
     { name: 'MOMENTOS', path: '/momentos' },
     { name: 'LIBROS', path: '/libros' },
     { name: 'PERSONAJES', path: '#' },

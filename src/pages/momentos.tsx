@@ -5,6 +5,7 @@ import type { User } from '@supabase/supabase-js'
 import toast, { Toaster } from 'react-hot-toast'
 import './momentos.css'
 import Header from '../components/Header'
+import stormBg from '../assets/momentos-storm-bg.png'
 
 /* ── Types ── */
 interface PostImage {
@@ -599,6 +600,10 @@ export default function Momentos() {
           </button>
         )}
       </Header>
+
+      {/* Storm Background */}
+      <div className="momentos-storm-bg" style={{ backgroundImage: `url(${stormBg})` }} />
+      <div className="momentos-storm-overlay" />
 
       {/* Feed */}
       <div className="momentos-feed">
