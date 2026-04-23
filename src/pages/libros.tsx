@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { 
   type Book, 
   searchGoogleBooks, 
-  getLocalBooks, 
-  saveBookToLocal,
+  saveBookToCloud,
+  getUserCollection,
   getAvailableEpubs,
   findMatchingEpub,
   getEpubDownloadUrl 
 } from '../lib/book_service.ts';
+import { supabase } from '../lib/supabase/supabase';
 import footerBg from '../assets/footer-bg.png';
 import './libros.css';
 
@@ -18,6 +19,7 @@ import { NAV_LINKS } from '../lib/constants';
 export default function Libros() {
   const [searchQuery, setSearchQuery] = useState('');
   const [books, setBooks] = useState<Book[]>([]);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [featuredLoading, setFeaturedLoading] = useState(true);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
@@ -29,11 +31,28 @@ export default function Libros() {
   const [isPaused, setIsPaused] = useState(false);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+
+  const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 5000);
+  };
 
   useEffect(() => {
-    fetchLocalBooks();
+    checkUser();
     fetchEpubsAndFeatured();
   }, []);
+
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
+    if (user) fetchUserCollection(user.id);
+  };
+
+  const fetchUserCollection = async (userId: string) => {
+    const books = await getUserCollection(userId);
+    setLocalBooks(books);
+  };
 
   const fetchEpubsAndFeatured = async () => {
     const epubs = await getAvailableEpubs();
@@ -92,10 +111,6 @@ export default function Libros() {
     }
   };
 
-  const fetchLocalBooks = async () => {
-    const data = await getLocalBooks();
-    setLocalBooks(data);
-  };
 
   const handleBookClick = (i: number, book: Book) => {
     if (i === carouselIndex) {
@@ -149,10 +164,14 @@ export default function Libros() {
   };
 
   const handleSaveBook = async (book: Book) => {
-    const success = await saveBookToLocal(book);
+    if (!user) {
+      showNotification('He actuado para reyes, mendigos y algún que otro dios despistado, pero me niego a contarle mis mejores secretos a una sombra sin rostro. Ponle un nombre a tu historia, amigo mío.', 'info');
+      return;
+    }
+    const success = await saveBookToCloud(book, user.id);
     if (success) {
-      alert('Libro guardado en la colección local.');
-      fetchLocalBooks();
+      showNotification('Excelente elección. He guardado este relato en tu colección. Te prometo mantenerlo a salvo de tormentas, polillas y tiranos sin imaginación', 'success');
+      fetchUserCollection(user.id);
     }
   };
 
@@ -169,16 +188,15 @@ export default function Libros() {
             </p>
             <form className="libros-search-form" onSubmit={handleSearch}>
               <div className="search-input-wrapper">
-                <span className="material-symbols-outlined search-icon">search</span>
+                <button type="submit" className="search-icon-btn" disabled={loading}>
+                  <span className="material-symbols-outlined">search</span>
+                </button>
                 <input 
                   type="text" 
                   placeholder="Busca clásicos, fantasía o tu próxima leyenda..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <button type="submit" disabled={loading}>
-                  {loading ? 'BUSCANDO...' : 'BUSCAR'}
-                </button>
               </div>
             </form>
 
@@ -418,6 +436,20 @@ export default function Libros() {
           </nav>
         </div>
       </footer>
+
+      {/* ── Custom Notification Banner ── */}
+      {notification && (
+        <div className={`hc-notification ${notification.type}`}>
+          <div className="hc-notification-content">
+            <span className="material-symbols-outlined hc-notification-icon">
+              {notification.type === 'success' ? 'check_circle' : 
+               notification.type === 'error' ? 'error' : 'info'}
+            </span>
+            <p>{notification.message}</p>
+          </div>
+          <button className="hc-notification-close" onClick={() => setNotification(null)}>×</button>
+        </div>
+      )}
     </div>
   );
 }
