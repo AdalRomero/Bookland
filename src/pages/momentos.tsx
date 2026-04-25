@@ -255,7 +255,7 @@ function PostCard({ post, user, onCommentAdded, onDeletePost, onEditPost }: { po
 function NewPostModal({ user, onClose, onCreated, initialPost }: { user: User; onClose: () => void; onCreated: (post: Post, isEdit: boolean) => void; initialPost?: Post }) {
   const [titulo, setTitulo] = useState(initialPost?.titulo ?? '')
   const [contenido, setContenido] = useState(initialPost?.contenido ?? '')
-  const [imagenUrl, setImagenUrl] = useState(initialPost?.post_imagenes?.[0]?.imagen_url ?? initialPost?.imagen_fondo_url ?? '')
+  const [imagenUrl] = useState(initialPost?.post_imagenes?.[0]?.imagen_url ?? initialPost?.imagen_fondo_url ?? '')
   
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(initialPost?.post_imagenes?.[0]?.imagen_url ?? initialPost?.imagen_fondo_url ?? null)
